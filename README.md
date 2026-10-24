@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/avatar.png" width="110" alt="github-probe">
+</p>
+
 # GitHub 实时探测
 
 实时探测本机到 GitHub 的连通性，并且**定位到底断在哪一层**：
