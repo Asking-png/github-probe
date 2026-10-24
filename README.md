@@ -64,12 +64,19 @@ python gh_probe.py -i 10 -n 20
 
 ## 打包成单个 exe（桌面版）
 
-双击 `build-exe.bat` 即可：自动建虚拟环境 → 装 PyInstaller → 打成单文件 exe →
-**自动更新桌面上的「GitHub 实时探测.exe」**。产物约 13 MB，不依赖本机 Python，拷到别的机器也能跑。
+双击 `build-exe.bat` 即可：自动建虚拟环境 → 装 PyInstaller → 打成单文件 `dist\GitHubProbe.exe`
+（约 13 MB，不依赖本机 Python，拷到别的机器也能跑）。
+
+构建脚本默认**只输出到 `dist\`**，不会往桌面写任何文件。想顺手在桌面放一份，加参数再跑一次：
 
 ```bat
-rem 验证 exe 是否真能工作（无窗口，探一轮后写入文件）
-"%USERPROFILE%\Desktop\GitHub 实时探测.exe" --selftest
+build-exe.bat desktop
+```
+
+验证 exe 是否真能工作（无窗口，探一轮后写入文件）：
+
+```bat
+dist\GitHubProbe.exe --selftest
 type "%LOCALAPPDATA%\GitHubProbe\selftest.txt"
 ```
 
@@ -113,7 +120,7 @@ git config --global --unset https.proxy
 | `gh_probe.py` | 核心：分层探测 + 命令行 |
 | `probe_gui.py` | 图形面板（实时表格 + 事件日志 + 状态翻转提示音） |
 | `start-probe.bat` | 双击启动图形面板（自动找 Python） |
-| `build-exe.bat` | 打包成单个 exe 并更新桌面图标 |
+| `build-exe.bat` | 打包成单个 exe（默认只输出 `dist\`，加 `desktop` 参数才复制到桌面） |
 | `make_icon.py` | 生成 `icon.ico`（纯标准库画 ICO，不用 Pillow） |
 | `smoke_gui.py` | GUI 冒烟测试（自动开窗口探一轮再关） |
 | `logs/probe.csv` | CSV 记录（已被 .gitignore 排除，含出口 IP 等信息别外传） |

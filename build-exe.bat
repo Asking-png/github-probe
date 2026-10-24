@@ -3,7 +3,7 @@ chcp 65001 >nul
 cd /d "%~dp0"
 setlocal
 
-rem ==== 把探测器打包成单个 exe，并更新桌面上的图标 ====
+rem ==== 把探测器打包成单个 exe（默认只输出到 dist\，不写桌面）====
 
 set "PY="
 for /f "delims=" %%i in ('where python.exe 2^>nul') do (
@@ -31,10 +31,25 @@ if not exist "dist\GitHubProbe.exe" (
     exit /b 1
 )
 
-copy /y "dist\GitHubProbe.exe" "%USERPROFILE%\Desktop\GitHub 实时探测.exe" >nul
+set "OUT=dist\GitHubProbe.exe"
 echo.
-echo 完成：dist\GitHubProbe.exe
-echo 桌面图标已更新：GitHub 实时探测.exe
-echo 验证方式：双击它；或在命令行运行  "GitHub 实时探测.exe" --selftest
-echo （自检结果写在 %%LOCALAPPDATA%%\GitHubProbe\selftest.txt）
+echo 完成：%OUT%
+for %%A in ("%OUT%") do echo 产物大小：%%~zA 字节
+echo.
+echo 直接运行：
+echo   "%OUT%"
+echo 自检（无窗口探一轮，结果写入 %%LOCALAPPDATA%%\GitHubProbe\selftest.txt）：
+echo   "%OUT%" --selftest
+echo.
+
+if /i "%~1"=="desktop" (
+    copy /y "%OUT%" "%USERPROFILE%\Desktop\GitHubProbe.exe" >nul
+    if errorlevel 1 (
+        echo [警告] 复制到桌面失败，请手动复制 %OUT%
+    ) else (
+        echo 已复制到桌面：GitHubProbe.exe
+    )
+) else (
+    echo 如需在桌面也放一份，重跑并加参数：  build-exe.bat desktop
+)
 pause
