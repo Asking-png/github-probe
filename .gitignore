@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# 探测产生的日志与 CSV（含你的网络出口 IP 等信息，勿外传）
+logs/
+*.csv
+
+# 打包产物
+build/
+dist/
+*.spec
+*.manifest
