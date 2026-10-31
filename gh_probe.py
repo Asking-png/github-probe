@@ -207,6 +207,9 @@ def probe_once(name: str, url: str, timeout: float = 8.0, proxy: str = "",
         else:
             try:
                 addr, ip, note = _resolve(host, port, list(dns_servers or []))
+                # getaddrinfo 返回的是 sockaddr（IPv6 时是 4 元组），create_connection 只收 2 元组
+                if len(addr) > 2:
+                    addr = (addr[0], addr[1])
                 r.ip = ip
                 r.note = note
                 r.dns_ms = (time.perf_counter() - t0) * 1000
